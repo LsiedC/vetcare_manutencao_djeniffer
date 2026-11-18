@@ -15,11 +15,11 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
  // Chamado 1 - O formulario aceitava letras no telefone
  // remove as letras 
 
- $telefoneLimpo = preg_replace('/[\s().+\-]/', '', $telefone); 
-    if ($nome === '' || $telefone === '') $erro = 'Informe o nome e o telefone do tutor.';
+ $telefoneLimpo = preg_replace('/[\s().+\-]/', '', $telefone);
+ if ($nome === '' || $telefoneLimpo === '' || !ctype_digit($telefoneLimpo)) $erro = 'Informe um nome e um telefone válido.';
     else {
-        if ($id) { $s=$pdo->prepare('UPDATE tutores SET nome=?, telefone=?, email=?, endereco=?, ativo=? WHERE id=?'); $s->execute([$nome,$telefone,$email,$endereco,(int)($_POST['ativo'] ?? 1),$id]); }
-        else { $s=$pdo->prepare('INSERT INTO tutores(nome,telefone,email,endereco) VALUES(?,?,?,?)'); $s->execute([$nome,$telefone,$email,$endereco]); }
+        if ($id) { $s=$pdo->prepare('UPDATE tutores SET nome=?, telefone=?, email=?, endereco=?, ativo=? WHERE id=?'); $s->execute([$nome,$telefoneLimpo,$email,$endereco,(int)($_POST['ativo'] ?? 1),$id]); }
+        else { $s=$pdo->prepare('INSERT INTO tutores(nome,telefone,email,endereco) VALUES(?,?,?,?)'); $s->execute([$nome,$telefoneLimpo,$email,$endereco]); }
         header('Location: index.php'); exit;
     }
 }
